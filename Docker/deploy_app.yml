@@ -1,0 +1,12 @@
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: Test docker with a docker run
+    command: docker run hello-world
+
+  - name: Deploy the app with Docker Compose
+    command: chdir=/vagrant/Docker docker-compose up -d
+
+  - name: Test that the app is running successfully
+    command: curl http://localhost:5000/
+

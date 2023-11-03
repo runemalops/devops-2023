@@ -1,0 +1,16 @@
+- hosts: nodes
+  become: yes
+  tasks:
+  - name: Destroy every host container with docker-compose down
+    command: chdir=/vagrant/Docker docker-compose down
+- hosts: manager
+  become: yes
+  tasks:
+  - name: Deploy DockerSwarm Docker Compose with myapp
+    command: chdir=/vagrant/DockerSwarm docker stack deploy --compose-file docker-compose.yml myapp
+  - name: Perform a docker stack ls
+    command: docker stack ls
+  - name: Perform a docker stack service myapp to check the replication
+    command: docker stack services myapp
+  - name: Scale the existin myapp_web to 6 replicas
+    command: docker service scale myapp_web=6
